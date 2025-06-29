@@ -40,7 +40,7 @@ SET sub_track_e68_to_e291=4
 SET use_custom_opening_ending=true
 
 :: Use Toonami Opening [true|false]
-SET use_toonami_opening=true
+SET use_toonami_opening=false
 
 :: Skip Opening/Ending [true|false] | Note: This overrides the custom opening/ending and Toonami opening
 SET skip_opening_ending=false
