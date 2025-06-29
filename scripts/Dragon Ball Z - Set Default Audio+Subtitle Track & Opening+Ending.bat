@@ -28,16 +28,19 @@ SET vlc=C:\Program Files\VideoLAN\VLC\vlc.exe
 :: Set Fullscreen [true|false]
 SET fullscreen=true
 
-:: Set Audio Tracks (ie. Audio Track 1 = 1) | Note: In the Dragon Ball Z iKaos/SoM release, audio tracks change after episode 67 (S02E28).
+:: Set Audio Tracks (ie. Audio Track 1 = 1) | Note: Audio tracks change after episode 67 (S02E28).
 SET audio_track_e1_to_e67=4
-SET audio_track_e68_to_e291=3
+SET audio_track_e68_to_e291=4
 
 :: Set Subtitle Track (ie. Sub Track 1 = 1)
 SET sub_track_e1_to_e67=3
 SET sub_track_e68_to_e291=4
 
-:: Change Opening/Ending [true|false] (Set to false to not change opening/ending and only change the audio/subtitle track)
-SET change_opening_ending=true
+:: Use Custom Opening/Ending [true|false]
+SET use_custom_opening_ending=true
+
+:: Use Toonami Opening [true|false]
+SET use_toonami_opening=false
 
 :: Set Opening/Ending Paths
 SET opening_1=M:\Extras\Dragon Ball Z\English OPs, EDs, Promos\FUNi DBZ OP1 (1-107).mkv
@@ -73,16 +76,52 @@ SET season_9_ending=%ending_3%
 SET start_time=00:01:50
 SET stop_time=00:22:30
 
+:: Set Toonami Openings
+SET toonami_opening_1=M:\Extras\Dragon Ball Z\English OPs, EDs, Promos\Toonami USA OP01 - Moltar 1 [YT].mp4
+SET toonami_opening_2=M:\Extras\Dragon Ball Z\English OPs, EDs, Promos\Toonami USA OP02 - Moltar 2 [RetroCCN].mkv
+SET toonami_opening_3=M:\Extras\Dragon Ball Z\English OPs, EDs, Promos\Toonami USA OP03 - Tom 1 [RetroCCN].mkv
+SET toonami_opening_4=M:\Extras\Dragon Ball Z\English OPs, EDs, Promos\Toonami USA OP04 - Tom S3 [Arian].mkv
+SET toonami_opening_5=M:\Extras\Dragon Ball Z\English OPs, EDs, Promos\Toonami USA OP05 - Tom Rising Sun [Arian].mkv
+SET toonami_opening_6=M:\Extras\Dragon Ball Z\English OPs, EDs, Promos\Toonami USA OP06 - Tom S4 [Arian].mkv
+SET toonami_opening_7=M:\Extras\Dragon Ball Z\English OPs, EDs, Promos\Toonami USA OP07 - Tom S5 [YT].mkv
+SET toonami_opening_8=M:\Extras\Dragon Ball Z\English OPs, EDs, Promos\Toonami USA OP08 - Tom S1-S2 Rerun [YT].mp4
+SET toonami_opening_9=M:\Extras\Dragon Ball Z\English OPs, EDs, Promos\Toonami USA OP09 - Tom S6 [TC].mkv
+SET toonami_opening_10=M:\Extras\Dragon Ball Z\English OPs, EDs, Promos\Toonami USA OP10 - Tom S7 [RetroCCN].mkv
+SET toonami_opening_11=M:\Extras\Dragon Ball Z\English OPs, EDs, Promos\Toonami USA OP11 - Tom S3 Rerun [ToonamiRecording].mkv
+SET toonami_opening_12=M:\Extras\Dragon Ball Z\English OPs, EDs, Promos\Toonami USA OP12 - Tom S4 Rerun [ToonamiRecording].mkv
+SET toonami_opening_13=M:\Extras\Dragon Ball Z\English OPs, EDs, Promos\Toonami USA OP13 - Tom UUE [YT].mp4
+SET toonami_opening_14=M:\Extras\Dragon Ball Z\English OPs, EDs, Promos\Toonami Kid Buu 30 sec Promo.mkv
+SET arrival_opening=M:\Extras\Dragon Ball Z\English OPs, EDs, Promos\DBZ Pioneer Arrival Intro.mkv
+
+:: Set Toonami Season Openings
+SET toonami_season_1_opening_1=%toonami_opening_2%
+SET toonami_season_1_opening_2=%toonami_opening_8%
+SET toonami_season_1_opening_3=%toonami_opening_13%
+SET toonami_season_1_opening_4=%arrival_opening%
+SET toonami_season_2_opening_1=%toonami_opening_1%
+SET toonami_season_2_opening_2=%toonami_opening_3%
+SET toonami_season_2_opening_3=%toonami_opening_8%
+SET toonami_season_3_opening_1=%toonami_opening_4%
+SET toonami_season_3_opening_2=%toonami_opening_11%
+SET toonami_season_4_opening_1=%toonami_opening_5%
+SET toonami_season_4_opening_2=%toonami_opening_6%
+SET toonami_season_4_opening_3=%toonami_opening_12%
+SET toonami_season_5_opening=%toonami_opening_7%
+SET toonami_season_6_opening=%toonami_opening_9%
+SET toonami_season_7_opening=%toonami_opening_10%
+SET toonami_season_8_opening=%toonami_opening_14%
+SET toonami_season_9_opening=%toonami_opening_14%
+
 :: --------------------
 :: DO NOT MODIFY BELOW
 :: --------------------
 
-::SET video=%~1
 SET videos=%*
 SET audio_track=%audio_track_e68_to_e291%
 SET sub_track=%sub_track_e68_to_e291%
 SET opening=%opening_1%
 SET ending=%ending_1%
+SET toonami_opening=%arrival_opening%
 SET fullscreen_arg=
 IF "%fullscreen%" == "true" SET "fullscreen_arg=--fullscreen"
 
@@ -141,40 +180,93 @@ FOR %%a IN (%videos%) DO (
 	ECHO.!video! | findstr /C:"S02E35">nul && SET sub_track=!sub_track_e68_to_e291!
 
 	:: Set Opening by Season
-	ECHO.!video! | findstr /C:"Season 01">nul && SET opening=!season_1_opening!
-	ECHO.!video! | findstr /C:"Season 02">nul && SET opening=!season_2_opening!
-	ECHO.!video! | findstr /C:"Season 03">nul && SET opening=!season_3_opening!
-	ECHO.!video! | findstr /C:"Season 04">nul && SET opening=!season_4_opening!
-	ECHO.!video! | findstr /C:"Season 05">nul && SET opening=!season_5_opening!
-	ECHO.!video! | findstr /C:"Season 06">nul && SET opening=!season_6_opening!
-	ECHO.!video! | findstr /C:"Season 07">nul && SET opening=!season_7_opening!
-	ECHO.!video! | findstr /C:"Season 08">nul && SET opening=!season_8_opening!
-	ECHO.!video! | findstr /C:"Season 09">nul && SET opening=!season_9_opening!
+	IF "%use_custom_opening_ending%" == "true" (
+		ECHO.!video! | findstr /C:"Season 01">nul && SET opening=!season_1_opening!
+		ECHO.!video! | findstr /C:"Season 02">nul && SET opening=!season_2_opening!
+		ECHO.!video! | findstr /C:"Season 03">nul && SET opening=!season_3_opening!
+		ECHO.!video! | findstr /C:"Season 04">nul && SET opening=!season_4_opening!
+		ECHO.!video! | findstr /C:"Season 05">nul && SET opening=!season_5_opening!
+		ECHO.!video! | findstr /C:"Season 06">nul && SET opening=!season_6_opening!
+		ECHO.!video! | findstr /C:"Season 07">nul && SET opening=!season_7_opening!
+		ECHO.!video! | findstr /C:"Season 08">nul && SET opening=!season_8_opening!
+		ECHO.!video! | findstr /C:"Season 09">nul && SET opening=!season_9_opening!
 
-	:: Set Ending by Season
-	ECHO.!video! | findstr /C:"Season 01">nul && SET ending=!season_1_ending!
-	ECHO.!video! | findstr /C:"Season 02">nul && SET ending=!season_2_ending!
-	ECHO.!video! | findstr /C:"Season 03">nul && SET ending=!season_3_ending!
-	ECHO.!video! | findstr /C:"Season 04">nul && SET ending=!season_4_ending!
-	ECHO.!video! | findstr /C:"Season 05">nul && SET ending=!season_5_ending!
-	ECHO.!video! | findstr /C:"Season 06">nul && SET ending=!season_6_ending!
-	ECHO.!video! | findstr /C:"Season 07">nul && SET ending=!season_7_ending!
-	ECHO.!video! | findstr /C:"Season 08">nul && SET ending=!season_8_ending!
-	ECHO.!video! | findstr /C:"Season 09">nul && SET ending=!season_9_ending!
+		:: Set Ending by Season
+		ECHO.!video! | findstr /C:"Season 01">nul && SET ending=!season_1_ending!
+		ECHO.!video! | findstr /C:"Season 02">nul && SET ending=!season_2_ending!
+		ECHO.!video! | findstr /C:"Season 03">nul && SET ending=!season_3_ending!
+		ECHO.!video! | findstr /C:"Season 04">nul && SET ending=!season_4_ending!
+		ECHO.!video! | findstr /C:"Season 05">nul && SET ending=!season_5_ending!
+		ECHO.!video! | findstr /C:"Season 06">nul && SET ending=!season_6_ending!
+		ECHO.!video! | findstr /C:"Season 07">nul && SET ending=!season_7_ending!
+		ECHO.!video! | findstr /C:"Season 08">nul && SET ending=!season_8_ending!
+		ECHO.!video! | findstr /C:"Season 09">nul && SET ending=!season_9_ending!
+	)
+
+	:: Set Toonami Opening by Season | TODO: Improve randomization
+	IF "%use_toonami_opening%" == "true" (
+		ECHO.!video! | findstr /C:"Season 01">nul && (
+			:: Random number between 1 and 4
+			SET /A num=!RANDOM! %% 4 + 1
+			IF !num! == 1 SET toonami_opening=!toonami_season_1_opening_1!
+			IF !num! == 2 SET toonami_opening=!toonami_season_1_opening_2!
+			IF !num! == 3 SET toonami_opening=!toonami_season_1_opening_3!
+			IF !num! == 4 SET toonami_opening=!toonami_season_1_opening_4!
+		)
+		ECHO.!video! | findstr /C:"Season 02">nul && (
+			:: Random number between 1 and 3
+			SET /A num=!RANDOM! %% 3 + 1
+			IF !num! == 1 SET toonami_opening=!toonami_season_2_opening_1!
+			IF !num! == 2 SET toonami_opening=!toonami_season_2_opening_2!
+			IF !num! == 3 SET toonami_opening=!toonami_season_2_opening_3!
+		)
+		ECHO.!video! | findstr /C:"Season 03">nul && (
+			:: Random number between 1 and 2
+			SET /A num=!RANDOM! %% 2 + 1
+			IF !num! == 1 SET toonami_opening=!toonami_season_3_opening_1!
+			IF !num! == 2 SET toonami_opening=!toonami_season_3_opening_2!
+		)
+		ECHO.!video! | findstr /C:"Season 04">nul && (
+			:: Random number between 1 and 3
+			SET /A num=!RANDOM! %% 3 + 1
+			IF !num! == 1 SET toonami_opening=!toonami_season_4_opening_1!
+			IF !num! == 2 SET toonami_opening=!toonami_season_4_opening_2!
+			IF !num! == 3 SET toonami_opening=!toonami_season_4_opening_3!
+		)
+		ECHO.!video! | findstr /C:"Season 05">nul && SET toonami_opening=!toonami_season_5_opening!
+		ECHO.!video! | findstr /C:"Season 06">nul && SET toonami_opening=!toonami_season_6_opening!
+		ECHO.!video! | findstr /C:"Season 07">nul && SET toonami_opening=!toonami_season_7_opening!
+		ECHO.!video! | findstr /C:"Season 08">nul && SET toonami_opening=!toonami_season_8_opening!
+		ECHO.!video! | findstr /C:"Season 09">nul && SET toonami_opening=!toonami_season_9_opening!
+	)
 
 	:: Decrement Audio and Subtitle Tracks as they are zero-based
 	SET /A audio_track-=1
 	SET /A sub_track-=1
 
-	:: Create and append arguments | NOTE: :audio-track must be used instead of --audio-track to prevent setting for all videos
-	IF "%change_opening_ending%" == "true" (
-		SET args=!args! "!opening!" --start-time=%start_time% !video! :audio-track=!audio_track! :sub-track=!sub_track! --stop-time=%stop_time% "!ending!"
-	) ELSE (
+	:: Create and append arguments
+	IF "%use_custom_opening_ending%" == "true" IF "%use_toonami_opening%" == "true" (
+		SET args=!args! "!toonami_opening!" "!opening!" !video! :audio-track=!audio_track! :sub-track=!sub_track! :start-time=%start_time% :stop-time=%stop_time% "!ending!"
+	)
+	IF "%use_custom_opening_ending%" == "true" IF "%use_toonami_opening%" == "false" (
+		SET args=!args! "!opening!" !video! :audio-track=!audio_track! :sub-track=!sub_track! :start-time=%start_time% :stop-time=%stop_time% "!ending!"
+	)
+	IF "%use_custom_opening_ending%" == "false" IF "%use_toonami_opening%" == "true" (
+		SET args=!args! "!toonami_opening!" !video! :audio-track=!audio_track! :sub-track=!sub_track! :start-time=%start_time% :stop-time=%stop_time%
+	)
+	IF "%use_custom_opening_ending%" == "false" IF "%use_toonami_opening%" == "false" (
 		SET args=!args! !video! :audio-track=!audio_track! :sub-track=!sub_track!
 	)
 )
 
 :: Start VLC Media Player
-"%vlc%" %fullscreen_arg% !args!
+"%vlc%" %fullscreen_arg% !args! --play-and-exit
+
+:: VLC Media Player - Command Line
+:: Usage: vlc [options] [stream] ...
+:: Option-styles:
+:: --option A global option that is set for the duration of the program.
+::  -option A single letter version of a global --option.
+::  :option An option that only applies to the stream directly before it and that overrides previous settings.
 
 ENDLOCAL
