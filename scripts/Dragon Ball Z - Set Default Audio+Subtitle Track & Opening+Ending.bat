@@ -40,10 +40,14 @@ SET sub_track_e68_to_e291=4
 SET use_custom_opening_ending=true
 
 :: Use Toonami Opening [true|false]
-SET use_toonami_opening=false
+SET use_toonami_opening=true
 
 :: Skip Opening/Ending [true|false] | Note: This overrides the custom opening/ending and Toonami opening
 SET skip_opening_ending=false
+
+:: Set Start/Stop Times [HH:mm:ss] | Note: In the Dragon Ball Z iKaos/SoM release, Start Time = 00:01:49, End Time = 00:22:32
+SET start_time=00:01:50
+SET stop_time=00:22:31
 
 :: Set Opening/Ending Paths
 SET opening_1=M:\Extras\Dragon Ball Z\English OPs, EDs, Promos\FUNi DBZ OP1 (1-107).mkv
@@ -75,10 +79,6 @@ SET season_7_ending=%ending_3%
 SET season_8_ending=%ending_3%
 SET season_9_ending=%ending_3%
 
-:: Set Start/Stop Times [HH:mm:ss] | Note: In the Dragon Ball Z iKaos/SoM release, Start Time = 00:01:49, End Time = 00:22:32
-SET start_time=00:01:50
-SET stop_time=00:22:30
-
 :: Set Toonami Openings
 SET toonami_opening_1=M:\Extras\Dragon Ball Z\English OPs, EDs, Promos\Toonami USA OP01 - Moltar 1 [YT].mp4
 SET toonami_opening_2=M:\Extras\Dragon Ball Z\English OPs, EDs, Promos\Toonami USA OP02 - Moltar 2 [RetroCCN].mkv
@@ -96,7 +96,7 @@ SET toonami_opening_13=M:\Extras\Dragon Ball Z\English OPs, EDs, Promos\Toonami 
 SET toonami_opening_14=M:\Extras\Dragon Ball Z\English OPs, EDs, Promos\Toonami Kid Buu 30 sec Promo.mkv
 SET arrival_opening=M:\Extras\Dragon Ball Z\English OPs, EDs, Promos\DBZ Pioneer Arrival Intro.mkv
 
-:: Set Toonami Season Openings
+:: Set Toonami Season Openings | Note: Seasons with multiple openings will play one opening at random.
 SET toonami_season_1_opening_1=%toonami_opening_2%
 SET toonami_season_1_opening_2=%toonami_opening_8%
 SET toonami_season_1_opening_3=%toonami_opening_13%
