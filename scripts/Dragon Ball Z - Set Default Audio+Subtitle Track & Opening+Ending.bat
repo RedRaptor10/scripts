@@ -36,6 +36,9 @@ SET audio_track_e68_to_e291=3
 SET sub_track_e1_to_e67=3
 SET sub_track_e68_to_e291=4
 
+:: Change Opening/Ending [true|false] (Set to false to not change opening/ending and only change the audio/subtitle track)
+SET change_opening_ending=true
+
 :: Set Opening/Ending Paths
 SET opening_1=M:\Extras\Dragon Ball Z\English OPs, EDs, Promos\FUNi DBZ OP1 (1-107).mkv
 SET opening_2=M:\Extras\Dragon Ball Z\English OPs, EDs, Promos\FUNi DBZ OP2 (108-199).mkv
@@ -164,7 +167,11 @@ FOR %%a IN (%videos%) DO (
 	SET /A sub_track-=1
 
 	:: Create and append arguments | NOTE: :audio-track must be used instead of --audio-track to prevent setting for all videos
-	SET args=!args! "!opening!" --start-time=%start_time% !video! :audio-track=!audio_track! :sub-track=!sub_track! --stop-time=%stop_time% "!ending!"
+	IF "%change_opening_ending%" == "true" (
+		SET args=!args! "!opening!" --start-time=%start_time% !video! :audio-track=!audio_track! :sub-track=!sub_track! --stop-time=%stop_time% "!ending!"
+	) ELSE (
+		SET args=!args! !video! :audio-track=!audio_track! :sub-track=!sub_track!
+	)
 )
 
 :: Start VLC Media Player
