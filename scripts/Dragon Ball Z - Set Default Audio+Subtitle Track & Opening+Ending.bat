@@ -252,7 +252,7 @@ FOR %%a IN (%videos%) DO (
 		SET args=!args! "!opening!" !video! :audio-track=!audio_track! :sub-track=!sub_track! :start-time=%start_time% :stop-time=%stop_time% "!ending!"
 	)
 	IF "%use_custom_opening_ending%" == "false" IF "%use_toonami_opening%" == "true" (
-		SET args=!args! "!toonami_opening!" !video! :audio-track=!audio_track! :sub-track=!sub_track! :start-time=%start_time% :stop-time=%stop_time%
+		SET args=!args! "!toonami_opening!" !video! :audio-track=!audio_track! :sub-track=!sub_track!
 	)
 	IF "%use_custom_opening_ending%" == "false" IF "%use_toonami_opening%" == "false" (
 		SET args=!args! !video! :audio-track=!audio_track! :sub-track=!sub_track!
