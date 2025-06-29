@@ -42,6 +42,9 @@ SET use_custom_opening_ending=true
 :: Use Toonami Opening [true|false]
 SET use_toonami_opening=false
 
+:: Skip Opening/Ending [true|false] | Note: This overrides the custom opening/ending and Toonami opening
+SET skip_opening_ending=false
+
 :: Set Opening/Ending Paths
 SET opening_1=M:\Extras\Dragon Ball Z\English OPs, EDs, Promos\FUNi DBZ OP1 (1-107).mkv
 SET opening_2=M:\Extras\Dragon Ball Z\English OPs, EDs, Promos\FUNi DBZ OP2 (108-199).mkv
@@ -152,8 +155,8 @@ SETLOCAL DisableDelayedExpansion
 
 :: Set VLC Media Player arguments
 SET args=
-FOR %%a IN (%videos%) DO (
-	SET video=%%a
+FOR /f "delims=" %%a IN ('cmd /c ^"FOR %%i IN ^(%videos%^) DO @ECHO %%~i^"^|sort') DO (
+	SET video="%%a"
 
 	SETLOCAL EnableDelayedExpansion
 
@@ -245,17 +248,21 @@ FOR %%a IN (%videos%) DO (
 	SET /A sub_track-=1
 
 	:: Create and append arguments
-	IF "%use_custom_opening_ending%" == "true" IF "%use_toonami_opening%" == "true" (
-		SET args=!args! "!toonami_opening!" "!opening!" !video! :audio-track=!audio_track! :sub-track=!sub_track! :start-time=%start_time% :stop-time=%stop_time% "!ending!"
-	)
-	IF "%use_custom_opening_ending%" == "true" IF "%use_toonami_opening%" == "false" (
-		SET args=!args! "!opening!" !video! :audio-track=!audio_track! :sub-track=!sub_track! :start-time=%start_time% :stop-time=%stop_time% "!ending!"
-	)
-	IF "%use_custom_opening_ending%" == "false" IF "%use_toonami_opening%" == "true" (
-		SET args=!args! "!toonami_opening!" !video! :audio-track=!audio_track! :sub-track=!sub_track!
-	)
-	IF "%use_custom_opening_ending%" == "false" IF "%use_toonami_opening%" == "false" (
-		SET args=!args! !video! :audio-track=!audio_track! :sub-track=!sub_track!
+	IF "%skip_opening_ending%" == "true" (
+		SET args=!args! !video! :audio-track=!audio_track! :sub-track=!sub_track! :start-time=%start_time% :stop-time=%stop_time%
+	) ELSE (
+		IF "%use_custom_opening_ending%" == "true" IF "%use_toonami_opening%" == "true" (
+			SET args=!args! "!toonami_opening!" "!opening!" !video! :audio-track=!audio_track! :sub-track=!sub_track! :start-time=%start_time% :stop-time=%stop_time% "!ending!"
+		)
+		IF "%use_custom_opening_ending%" == "true" IF "%use_toonami_opening%" == "false" (
+			SET args=!args! "!opening!" !video! :audio-track=!audio_track! :sub-track=!sub_track! :start-time=%start_time% :stop-time=%stop_time% "!ending!"
+		)
+		IF "%use_custom_opening_ending%" == "false" IF "%use_toonami_opening%" == "true" (
+			SET args=!args! "!toonami_opening!" !video! :audio-track=!audio_track! :sub-track=!sub_track!
+		)
+		IF "%use_custom_opening_ending%" == "false" IF "%use_toonami_opening%" == "false" (
+			SET args=!args! !video! :audio-track=!audio_track! :sub-track=!sub_track!
+		)
 	)
 )
 
@@ -265,8 +272,8 @@ FOR %%a IN (%videos%) DO (
 :: VLC Media Player - Command Line
 :: Usage: vlc [options] [stream] ...
 :: Option-styles:
-:: --option A global option that is set for the duration of the program.
-::  -option A single letter version of a global --option.
-::  :option An option that only applies to the stream directly before it and that overrides previous settings.
+:: --option		A global option that is set for the duration of the program.
+::  -option		A single letter version of a global --option.
+::  :option		An option that only applies to the stream directly before it and that overrides previous settings.
 
 ENDLOCAL
