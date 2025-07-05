@@ -34,11 +34,6 @@ function hideRetweets() {
 	});
 }
 
-(() => {
-	hideRetweets();
-	window.addEventListener('scroll', hideRetweets);
-})();
-
 const retweetObserver = new MutationObserver(mutations => {
 	for (const mutation of mutations) {
 		if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
