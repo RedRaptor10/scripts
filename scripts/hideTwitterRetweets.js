@@ -12,7 +12,9 @@
 
 'use strict'
 
-const twitterLists = []; // Add lists to hide retweets from (ie. 'MyList1', 'MyList2', etc.). Leave empty to hide retweets from all lists.
+// Add lists to hide retweets from (ie. 'MyList1', 'MyList2', etc.). Leave empty to hide retweets from all lists.
+const twitterLists = [];
+
 const selectedListCSS = 'a[href="/home"][aria-selected="true"] span';
 const tweetCSS = '[data-testid="cellInnerDiv"]';
 const retweetCSS = '[data-testid="socialContext"]';
@@ -25,16 +27,16 @@ function hideRetweets() {
 	const selectedListName = selectedList.innerHTML;
 	if (twitterLists.length > 0 && !twitterLists.includes(selectedListName)) return;
 
-    const retweets = document.querySelectorAll(retweetSelector);
+	const retweets = document.querySelectorAll(retweetSelector);
 
-    retweets.forEach(x => {
+	retweets.forEach(x => {
 		x.style.display = 'none';
 	});
 }
 
 (() => {
-    hideRetweets();
-    window.addEventListener('scroll', hideRetweets);
+	hideRetweets();
+	window.addEventListener('scroll', hideRetweets);
 })();
 
 const retweetObserver = new MutationObserver(mutations => {
