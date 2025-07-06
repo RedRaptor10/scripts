@@ -59,7 +59,7 @@ SET toonami_season_2_opening_3=%toonami_opening_8%
 SET videos=%*
 SET toonami_opening=%arrival_opening%
 SET fullscreen_arg=
-IF "%fullscreen%" == "true" SET "fullscreen_arg=--fullscreen"
+IF %fullscreen% == true SET "fullscreen_arg=--fullscreen"
 
 :: Set VLC Media Player arguments
 SET args=
@@ -69,7 +69,7 @@ FOR /f "delims=" %%a IN ('cmd /c ^"FOR %%i IN ^(%videos%^) DO @ECHO %%~i^"^|sort
 	SETLOCAL EnableDelayedExpansion
 
 	:: Set Toonami Opening by Season | TODO: Improve randomization
-	IF "%use_toonami_opening%" == "true" (
+	IF %use_toonami_opening% == true (
 		ECHO.!video! | findstr /C:"Season 01">nul && (
 			:: Random number between 1 and 4
 			SET /A num=!RANDOM! %% 4 + 1
@@ -99,10 +99,10 @@ FOR /f "delims=" %%a IN ('cmd /c ^"FOR %%i IN ^(%videos%^) DO @ECHO %%~i^"^|sort
 	)
 
 	:: Create and append arguments
-	IF "%use_toonami_opening%" == "true" (
+	IF %use_toonami_opening% == true (
 		SET args=!args! "!toonami_opening!" !video!
 	)
-	IF "%use_toonami_opening%" == "false" (
+	IF %use_toonami_opening% == false (
 		SET args=!args! !video!
 	)
 )
