@@ -34,14 +34,16 @@ SET audio_track_e14_to_e153=2
 :: Set Subtitle Track (ie. Sub Track 1 = 1)
 SET sub_track=4
 
-:: Use Custom Opening/Ending [true|false]
-SET use_custom_opening_ending=true
-
 :: Use Toonami Opening [true|false]
-SET use_toonami_opening=false
+SET use_toonami_opening=true
 
-:: Skip Opening/Ending [true|false] | Note: This overrides the custom opening/ending and Toonami opening
-SET skip_opening_ending=false
+:: Use Custom Opening/Ending [true|false]
+SET use_custom_opening=true
+SET use_custom_ending=true
+
+:: Skip Opening/Ending [true|false] | Note: This overrides the custom opening/ending
+SET skip_opening=false
+SET skip_ending=false
 
 :: Set Start/Stop Times [HH:mm:ss] | Note: In the Dragon Ball SoM release, Start Time = 00:01:48, End Time = 00:22:32
 SET start_time=00:01:49
@@ -140,7 +142,7 @@ SET opening=%opening_1%
 SET ending=%ending_1%
 SET toonami_opening=%toonami_opening_1%
 SET fullscreen_arg=
-IF "%fullscreen%" == "true" SET "fullscreen_arg=--fullscreen"
+IF %fullscreen% == true SET "fullscreen_arg=--fullscreen"
 
 SETLOCAL EnableDelayedExpansion
 
@@ -178,7 +180,7 @@ FOR /f "delims=" %%a IN ('cmd /c ^"FOR %%i IN ^(%videos%^) DO @ECHO %%~i^"^|sort
 	ECHO.!video! | findstr /C:"Season 01">nul && SET audio_track=!audio_track_e1_to_e13!
 
 	:: Set Opening by Season
-	IF "%use_custom_opening_ending%" == "true" (
+	IF %use_custom_opening% == true IF %skip_opening% == false (
 		ECHO.!video! | findstr /C:"Season 01">nul && SET opening=!season_1_opening!
 		ECHO.!video! | findstr /C:"Season 02">nul && SET opening=!season_2_opening!
 		ECHO.!video! | findstr /C:"Season 03">nul && SET opening=!season_3_opening!
@@ -188,8 +190,10 @@ FOR /f "delims=" %%a IN ('cmd /c ^"FOR %%i IN ^(%videos%^) DO @ECHO %%~i^"^|sort
 		ECHO.!video! | findstr /C:"Season 07">nul && SET opening=!season_7_opening!
 		ECHO.!video! | findstr /C:"Season 08">nul && SET opening=!season_8_opening!
 		ECHO.!video! | findstr /C:"Season 09">nul && SET opening=!season_9_opening!
+	)
 
-		:: Set Ending by Season
+	:: Set Ending by Season
+	IF %use_custom_ending% == true IF %skip_ending% == false (
 		ECHO.!video! | findstr /C:"Season 01">nul && SET ending=!season_1_ending!
 		ECHO.!video! | findstr /C:"Season 02">nul && SET ending=!season_2_ending!
 		ECHO.!video! | findstr /C:"Season 03">nul && SET ending=!season_3_ending!
@@ -202,7 +206,7 @@ FOR /f "delims=" %%a IN ('cmd /c ^"FOR %%i IN ^(%videos%^) DO @ECHO %%~i^"^|sort
 	)
 
 	:: Set Toonami Opening by Season | TODO: Improve randomization
-	IF "%use_toonami_opening%" == "true" (
+	IF %use_toonami_opening% == true (
 		ECHO.!video! | findstr /C:"Season 01">nul && (
 			:: Random number between 1 and 5
 			SET /A num=!RANDOM! %% 5 + 1
@@ -291,20 +295,31 @@ FOR /f "delims=" %%a IN ('cmd /c ^"FOR %%i IN ^(%videos%^) DO @ECHO %%~i^"^|sort
 	SET /A sub_track-=1
 
 	:: Create and append arguments
-	IF "%skip_opening_ending%" == "true" (
-		SET args=!args! !video! :audio-track=!audio_track! :sub-track=!sub_track! :start-time=%start_time% :stop-time=%stop_time%
+	IF %use_toonami_opening% == true (
+		SET args=!args! "!toonami_opening!"
+	)
+
+	IF NOT %skip_opening% == true (
+		IF %use_custom_opening% == true (
+			SET args=!args! "!opening!"
+		)
+	)
+
+	SET args=!args! !video! :audio-track=!audio_track! :sub-track=!sub_track!
+
+	IF %skip_opening% == true (
+		SET args=!args! :start-time=%start_time%
 	) ELSE (
-		IF "%use_custom_opening_ending%" == "true" IF "%use_toonami_opening%" == "true" (
-			SET args=!args! "!toonami_opening!" "!opening!" !video! :audio-track=!audio_track! :sub-track=!sub_track! :start-time=%start_time% :stop-time=%stop_time% "!ending!"
+		IF %use_custom_opening% == true (
+			SET args=!args! :start-time=%start_time%
 		)
-		IF "%use_custom_opening_ending%" == "true" IF "%use_toonami_opening%" == "false" (
-			SET args=!args! "!opening!" !video! :audio-track=!audio_track! :sub-track=!sub_track! :start-time=%start_time% :stop-time=%stop_time% "!ending!"
-		)
-		IF "%use_custom_opening_ending%" == "false" IF "%use_toonami_opening%" == "true" (
-			SET args=!args! "!toonami_opening!" !video! :audio-track=!audio_track! :sub-track=!sub_track!
-		)
-		IF "%use_custom_opening_ending%" == "false" IF "%use_toonami_opening%" == "false" (
-			SET args=!args! !video! :audio-track=!audio_track! :sub-track=!sub_track!
+	)
+
+	IF %skip_ending% == true (
+		SET args=!args! :stop-time=%stop_time%
+	) ELSE (
+		IF %use_custom_ending% == true (
+			SET args=!args! :stop-time=%stop_time% "!ending!"
 		)
 	)
 )
