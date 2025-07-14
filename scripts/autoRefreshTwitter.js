@@ -15,22 +15,22 @@
 const refreshTime = 30; // Refresh timeline interval (in seconds)
 
 function isAtTopOfPage() {
-    const tablist = document.querySelector('[role="tab"]');
-    const timeline = document.querySelector('main section[role="region"]');
+	const tablist = document.querySelector('[role="tab"]');
+	const timeline = document.querySelector('main section[role="region"]');
 
-    if (!tablist || !timeline) return false;
+	if (!tablist || !timeline) return false;
 
-    const tablistBottom = tablist.getBoundingClientRect().bottom;
-    const timelineTop = timeline.getBoundingClientRect().top;
+	const tablistBottom = tablist.getBoundingClientRect().bottom;
+	const timelineTop = timeline.getBoundingClientRect().top;
 
-    return tablistBottom <= timelineTop + 1;
+	return tablistBottom <= timelineTop + 1;
 }
 
 function refreshTimeline() {
 	const selectedList = document.querySelector('a[href="/home"][aria-selected="true"]');
 	if (!selectedList) return;
 
-    if (!isAtTopOfPage()) return;
+	if (!isAtTopOfPage()) return;
 
 	selectedList.click();
 }
