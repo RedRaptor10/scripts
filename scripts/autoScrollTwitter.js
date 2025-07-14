@@ -27,7 +27,7 @@ var tweetCounter = 0;
 var scrollInterval = null;
 
 function checkAutoScroll() {
-    // If previously manually scrolling timeline and then scrolled back to top, restart auto-scroll
+	// If previously manually scrolling timeline and then scrolled back to top, restart auto-scroll
 	if (!autoScroll && isAtTopOfPage()) {
 		autoScroll = true;
 		setScrollInterval();
@@ -49,12 +49,12 @@ function isAtTopOfPage() {
 function scrollTimeline() {
 	if (maxTweetsReached()) return;
 
-    const tablist = document.querySelector(tablistCSS);
-    if (!tablist) return;
+	const tablist = document.querySelector(tablistCSS);
+	if (!tablist) return;
 
-    if (currentTweet == null) {
-        currentTweet = document.querySelector(tweetCSS);
-    }
+	if (currentTweet == null) {
+		currentTweet = document.querySelector(tweetCSS);
+	}
 	if (!currentTweet) return;
 
 	if (!reverseScroll) {
@@ -68,13 +68,13 @@ function scrollTimeline() {
 	}
 	if (!currentTweet) return;
 
-    const offsetY = tablist.getBoundingClientRect().height;
-    const scrollTop = currentTweet.getBoundingClientRect().top + window.scrollY - offsetY;
+	const offsetY = tablist.getBoundingClientRect().height;
+	const scrollTop = currentTweet.getBoundingClientRect().top + window.scrollY - offsetY;
 
-    window.scrollTo({
-        behavior: 'smooth',
-        top: scrollTop,
-    });
+	window.scrollTo({
+		behavior: 'smooth',
+		top: scrollTop,
+	});
 
 	if (maxTweets > 0) {
 		tweetCounter++;
@@ -89,15 +89,8 @@ function maxTweetsReached() {
 		const selectedList = document.querySelector('a[href="/home"][aria-selected="true"]');
 		selectedList.click();
 
-		/* Use instead for smooth-scrolling back to top. Does not load new tweets.
-		window.scrollTo({
-			behavior: 'smooth',
-			top: 0
-		});
-		*/
-
 		tweetCounter = 0;
-        currentTweet = null;
+		currentTweet = null;
 		clearInterval(scrollInterval);
 		scrollInterval = null;
 		setScrollInterval();
@@ -105,7 +98,7 @@ function maxTweetsReached() {
 		return true;
 	}
 
-    return false;
+	return false;
 }
 
 function setScrollInterval() {
