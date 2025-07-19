@@ -1,13 +1,13 @@
 // ==UserScript==
-// @name		 Auto-Scroll Twitter
-// @namespace	http://tampermonkey.net/
-// @version	  2025-07-19
+// @name         Auto-Scroll Twitter
+// @namespace    http://tampermonkey.net/
+// @version      2025-07-19
 // @description  Automatically scroll Twitter timeline at a set interval. Scrolls through one tweet at a time, then scrolls back to top.
-// @author	   RedRaptor10
-// @match		https://twitter.com/*
-// @match		https://x.com/*
-// @icon		 data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
-// @grant		none
+// @author       RedRaptor10
+// @match        https://twitter.com/*
+// @match        https://x.com/*
+// @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
+// @grant        none
 // ==/UserScript==
 
 'use strict'
