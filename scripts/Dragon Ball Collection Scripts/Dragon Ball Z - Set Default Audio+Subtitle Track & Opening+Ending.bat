@@ -6,7 +6,7 @@
 ::
 :: Requirements:
 :: - VLC Media Player
-:: - The iKaos/SoM Dragon Ball Z v3 release
+:: - The SoM Dragon Ball Z release
 :: - Files renamed to Plex standards and organized in season folders (ie. Season 01\Dragon Ball Z - S01E01.mkv)
 ::
 :: Instructions:
@@ -47,7 +47,7 @@ SET use_custom_ending=true
 SET skip_opening=false
 SET skip_ending=false
 
-:: Set Start/Stop Times [HH:mm:ss] | Note: In the Dragon Ball Z iKaos/SoM release, Start Time = 00:01:49, End Time = 00:22:32
+:: Set Start/Stop Times [HH:mm:ss] | Note: In the Dragon Ball Z SoM release, Start Time = 00:01:49, End Time = 00:22:32
 SET start_time=00:01:50
 SET stop_time=00:22:31
 
@@ -292,3 +292,4 @@ FOR /f "delims=" %%a IN ('cmd /c ^"FOR %%i IN ^(%videos%^) DO @ECHO %%~i^"^|sort
 ::  :option		An option that only applies to the stream directly before it and that overrides previous settings.
 
 ENDLOCAL
+
