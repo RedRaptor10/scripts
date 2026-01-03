@@ -29,6 +29,9 @@ function isAtTopOfPage() {
 }
 
 function refreshTimeline() {
+	const timelineTabs = document.querySelector('nav.TimelineTabs');
+	if (!timelineTabs) return;
+
 	const selectedList = document.querySelector(timelineCSS);
 
 	if (!selectedList) {
@@ -42,3 +45,4 @@ function refreshTimeline() {
 }
 
 setInterval(refreshTimeline, refreshTime * 1000);
+
