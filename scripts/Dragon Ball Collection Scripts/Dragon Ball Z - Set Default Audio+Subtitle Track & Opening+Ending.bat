@@ -33,7 +33,7 @@ SET audio_track_e1_to_e67=4
 SET audio_track_e68_to_e291=4
 
 :: Set Subtitle Track (ie. Sub Track 1 = 1)
-SET sub_track_e1_to_e67=3
+SET sub_track_e1_to_e67=4
 SET sub_track_e68_to_e291=4
 
 :: Use Toonami Opening [true|false]
@@ -292,4 +292,5 @@ FOR /f "delims=" %%a IN ('cmd /c ^"FOR %%i IN ^(%videos%^) DO @ECHO %%~i^"^|sort
 ::  :option		An option that only applies to the stream directly before it and that overrides previous settings.
 
 ENDLOCAL
+
 
