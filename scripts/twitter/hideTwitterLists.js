@@ -1,13 +1,13 @@
 // ==UserScript==
-// @name		 Hide Twitter Lists
-// @namespace	http://tampermonkey.net/
-// @version	  2026-10-10
+// @name         Hide Twitter Lists
+// @namespace    http://tampermonkey.net/
+// @version      2026-10-10
 // @description  Hide Lists from Twitter
-// @author	   RedRaptor10
-// @match		https://twitter.com/*
-// @match		https://x.com/*
-// @icon		 data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
-// @grant		none
+// @author       RedRaptor10
+// @match        https://twitter.com/*
+// @match        https://x.com/*
+// @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
+// @grant        none
 // ==/UserScript==
 
 'use strict'
