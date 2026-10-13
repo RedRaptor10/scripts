@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Hide Twitter Lists
 // @namespace    http://tampermonkey.net/
-// @version      2026-10-10
+// @version      2026-10-13
 // @description  Hide Lists from Twitter
 // @author       RedRaptor10
 // @match        https://twitter.com/*
@@ -17,56 +17,46 @@ const twitterListsToHide = ['Following'];
 
 const twitterListsCSS = '[role="tablist"] [role="presentation"]';
 
-function hideTwitterLists() {
-	const twitterLists = document.querySelectorAll(twitterListsCSS);
+let hasClickedNextList = false;
+let isProcessing = false;
 
-	twitterLists.forEach(x => {
+function getLoadedListNames() {
+	const names = new Set();
+
+	document.querySelectorAll(twitterListsCSS).forEach(x => {
+		const span = x.querySelector('span');
+		if (span) {
+			names.add(span.innerHTML.trim());
+		}
+	});
+
+	return names;
+}
+
+function allTargetListsLoaded() {
+	const loadedListNames = getLoadedListNames();
+
+	return twitterListsToHide.every(name =>
+		loadedListNames.has(name)
+	);
+}
+
+function hideTwitterLists() {
+	let foundTargetList = false;
+
+	document.querySelectorAll(twitterListsCSS).forEach(x => {
 		const span = x.querySelector('span');
 		if (!span) return;
 
 		const listName = span.innerHTML.trim();
 
 		if (twitterListsToHide.includes(listName)) {
+			foundTargetList = true;
 			x.style.display = 'none';
 		}
 	});
-}
 
-function waitForTwitterLists() {
-	return new Promise((resolve) => {
-		const checkLists = () => {
-			const twitterLists = document.querySelectorAll(twitterListsCSS);
-			const loadedListNames = new Set();
-
-			twitterLists.forEach(x => {
-				const span = x.querySelector('span');
-				if (span) {
-					loadedListNames.add(span.innerHTML.trim());
-				}
-			});
-
-			return twitterListsToHide.every(name =>
-				loadedListNames.has(name)
-			);
-		};
-
-		if (checkLists()) {
-			return resolve();
-		}
-
-		const observer = new MutationObserver(() => {
-			if (checkLists()) {
-				observer.disconnect();
-				resolve();
-			}
-		});
-
-		observer.observe(document.body, {
-			childList: true,
-			subtree: true,
-			characterData: true
-		});
-	});
+	return foundTargetList;
 }
 
 function clickNextVisibleList() {
@@ -91,15 +81,42 @@ function clickNextVisibleList() {
 	}
 }
 
-async function initHideTwitterLists() {
-	// Wait until all Twitter Lists to hide have loaded
-	await waitForTwitterLists();
+function processTwitterLists() {
+	if (isProcessing) return;
+	isProcessing = true;
 
-	// Hide Twitter Lists
-	hideTwitterLists();
+	try {
+		// Only proceed when at least one target list is present
+		const foundTargetList = hideTwitterLists();
 
-	// Click the first remaining list to load its timeline
-	clickNextVisibleList();
+		if (!foundTargetList) {
+			hasClickedNextList = false;
+			return;
+		}
+
+		// Wait until every target list has loaded before clicking
+		if (!allTargetListsLoaded()) return;
+
+		// Hide the target lists and click the next visible list only once
+		if (!hasClickedNextList) {
+			hideTwitterLists();
+			clickNextVisibleList();
+			hasClickedNextList = true;
+		}
+	} finally {
+		isProcessing = false;
+	}
 }
 
-initHideTwitterLists();
+const observer = new MutationObserver(() => {
+	processTwitterLists();
+});
+
+observer.observe(document.body, {
+	childList: true,
+	subtree: true,
+	characterData: true
+});
+
+// Handle tabs that are already present
+processTwitterLists();
